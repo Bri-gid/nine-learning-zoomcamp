@@ -7,7 +7,7 @@ from sklearn.metrics import mutual_info_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import accuracy_score
+
 
 df = pd.read_csv('course_lead_scoring_2026.csv')
 df.head()
