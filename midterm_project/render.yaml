@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: scotus-predict
+    runtime: docker
+    plan: free
