@@ -9,6 +9,10 @@ import numpy as np
 from scipy.sparse import vstack
 import matplotlib.pyplot as plt
 from sklearn.feature_selection import mutual_info_classif
+import os
+os.makedirs("images", exist_ok=True)
+import matplotlib
+matplotlib.use("Agg")
 
 
 df = pd.read_csv("data/scdb_case_centered.csv")
@@ -141,13 +145,29 @@ print("TEST acc:", accuracy_score(y_test, p_test >= 0.5))
 print("Baseline acc:", accuracy_score(y_test, [1] * len(y_test)))
 
 # target over time
-(y.groupby(df["term"] // 10 * 10).mean()).plot(kind="bar", title="Petitioner win rate by decade")
+# win rate by decade
+print(y.groupby(df["term"] // 10 * 10).mean().round(3))   # paste this output here for the README sentence
+ax = (y.groupby(df["term"] // 10 * 10).mean()).plot(kind="bar", title="Petitioner win rate by decade")
+ax.set_xlabel("Decade")
+ax.set_ylabel("Win rate")
+plt.tight_layout()
+plt.savefig("images/win_rate_by_decade.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # target balance
 print(y.value_counts(normalize=True))
+ax = y.value_counts(normalize=True).sort_index().plot(kind="bar", title="Target balance (partyWinning)")
+ax.set_xlabel("0 = petitioner loses, 1 = petitioner wins")
+ax.set_ylabel("Share of cases")
+plt.tight_layout()
+plt.savefig("images/target_balance.png", dpi=150, bbox_inches="tight")
+plt.show()
 
 # XGBoost feature importance (top 15)
 imp = pd.Series(final.feature_importances_, index=dv_final.get_feature_names_out())
-imp.sort_values(ascending=False).head(15).plot(kind="barh", title="Top features")
-plt.gca().invert_yaxis(); plt.show()
+print(imp.sort_values(ascending=False).head(10))           # paste this output here for the README sentence
+ax = imp.sort_values(ascending=False).head(15).plot(kind="barh", title="Top 15 features (XGBoost)")
+ax.invert_yaxis()
+plt.tight_layout()
+plt.savefig("images/feature_importance.png", dpi=150, bbox_inches="tight")
+plt.show()
