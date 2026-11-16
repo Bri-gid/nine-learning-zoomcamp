@@ -236,7 +236,7 @@ Then send the same `curl` request as above to `http://127.0.0.1:8000/predict`. I
 
 The image is based on `python:3.14-slim`, installs the pinned `requirements.txt`, and starts the service with uvicorn.
 
-Screenshot of the container running: `images/<!-- TODO: filename -->`
+Screenshot of the container running are in the images folder: `images/`
 
 ---
 
